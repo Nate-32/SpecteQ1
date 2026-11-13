@@ -79,7 +79,7 @@ Update that file to publish confirmed 2027 specifications without modifying layo
 
 ### Prerequisites
 
-- Node.js `>= 20`
+- Node.js `>= 20` (CI uses Node.js 24)
 - npm `>= 10`
 
 ### Steps
@@ -122,7 +122,7 @@ This repository includes `.github/workflows/deploy.yml`, configured for one-clic
 
 ### How Automatic Deployment Works
 
-- **Push to `main`**: Every push to `main` automatically triggers the `Deploy SpecteQ 2027 to GitHub Pages` workflow. It installs dependencies (`npm ci`), runs `npm run lint`, builds the production bundle (`npm run build`), uploads `./dist`, and deploys directly to GitHub Pages.
+- **Push to `main`**: Every push to `main` automatically triggers the `Deploy SpecteQ 2027 to GitHub Pages` workflow. It installs dependencies (`npm ci` when `package-lock.json` is present, or `npm install` otherwise), runs `npm run lint`, builds the production bundle (`npm run build`), uploads `./dist`, and deploys directly to GitHub Pages.
 - **Manual Deployment (`workflow_dispatch`)**: Open the **Actions** tab in GitHub, select **Deploy SpecteQ 2027 to GitHub Pages**, and click **Run workflow**.
 
 Once the `deploy` job succeeds, your live site will be accessible at:
