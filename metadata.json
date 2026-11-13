@@ -1,0 +1,6 @@
+{
+  "name": "SpecteQ 2027 — The Bot Competition",
+  "description": "SpecteQ 2027 is a futuristic robotics and engineering competition blending modern Vice City aesthetics, liquid-glass terminals, and interactive player progression.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
