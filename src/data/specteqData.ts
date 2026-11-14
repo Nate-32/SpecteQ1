@@ -1,35 +1,26 @@
 export type AccentKey = 'cyan' | 'pink' | 'violet' | 'orange';
 
-export interface RoboticsCategory {
-  id: string;
-  name: string;
-  accent: AccentKey;
-  statusLabel: string;
-  shortDescription: string;
-  fullDescription: string;
-  challengeFocus: string[];
-  technicalSpecs: Array<{ label: string; value: string }>;
-  participationNotes: string;
-  glyphType: 'combat' | 'industrial' | 'aerial' | 'underwater' | 'ground' | 'ai';
-}
-
 export interface MissionTrack {
   id: string;
   playerSlot: string;
   codeName: string;
   name: string;
+  missionType: string;
   categoryTag: string;
   isReferenceExample: boolean;
-  difficulty: 'Entry' | 'Intermediate' | 'Advanced' | 'Configurable';
+  difficulty: 'Entry' | 'Intermediate' | 'Manual Control';
   accent: AccentKey;
   shortDescription: string;
   overview: string;
   objective: string;
+  objectivesList?: string[];
+  winningCondition?: string;
   requirements: string[];
   challenges: string[];
   rules: string[];
   completionCriteria: string[];
   hardwareSummary: string;
+  visualType: 'gesture' | 'maze' | 'robo-heist';
 }
 
 export interface GameLevel {
@@ -59,7 +50,7 @@ export interface LeaderboardEntry {
   rank: number;
   teamName: string;
   playerLead: string;
-  trackCategory: 'Gesture-Controlled' | 'Maze Navigation' | 'Autonomous Systems';
+  trackCategory: 'Gesture-Controlled' | 'Maze Navigation' | 'ROBO HEIST';
   completedMissions: number;
   totalMissions: number;
   achievementStatus: string;
@@ -84,12 +75,18 @@ export interface ContactCoordinator {
   accent: AccentKey;
 }
 
+export const ASSET_PATHS = {
+  background: './assets/aistudio/BG_0816284a.png',
+  logo: './assets/aistudio/logo_7d034baf.png',
+  hardwareBlueprint: './assets/aistudio/Hardware_architcture_blueprint_b810e078.png',
+};
+
 export const EVENT_CONFIG = {
   brandName: 'SpecteQ',
   editionYear: '2027',
-  fullTitle: 'SPECTEQ 2027',
+  fullTitle: 'SpecteQ 2027',
   subtitle: 'THE BOT COMPETITION',
-  tagline: 'BUILD. BATTLE. DOMINATE.',
+  tagline: 'Build. Battle. Dominate.',
   heroDescription:
     'Enter the ultimate robotics arena. Learn, experiment, engineer your machines, and compete to achieve the highest score.',
   venuePlaceholder: 'Coastal Robotics Convention Center · Venue TBD (2027)',
@@ -119,7 +116,7 @@ export const JOURNEY_STAGES = [
     title: 'Build',
     specteqTerm: 'Player Build',
     description:
-      'Gaming Teams unlock their hardware chassis in Level 02, integrate sensors, and flash custom firmware for their selected mission.',
+      'Gaming Teams unlock their hardware chassis in Level 02, integrate sensors or mechanical grippers, and tune control systems for their selected mission.',
   },
   {
     id: 'test',
@@ -127,7 +124,7 @@ export const JOURNEY_STAGES = [
     title: 'Test',
     specteqTerm: 'Scrutiny & Calibration',
     description:
-      'Teams calibrate control loops, run obstacle trials, and validate hardware compliance ahead of arena qualification.',
+      'Teams calibrate control loops, run arena trials, and validate hardware compliance ahead of arena qualification.',
   },
   {
     id: 'compete',
@@ -149,153 +146,13 @@ export const PDF_VOCABULARY_MAP = [
   { standard: 'Winners', specteq: 'High Score Champions' },
 ];
 
-export const ROBOTICS_CATEGORIES: RoboticsCategory[] = [
-  {
-    id: 'combat-robotics',
-    name: 'Combat Robotics',
-    accent: 'pink',
-    statusLabel: 'Category Terminal · Configurable 2027 Track',
-    shortDescription:
-      'High-torque kinetic engineering, reinforced chassis fabrication, and tactical arena control systems.',
-    fullDescription:
-      'Combat Robotics challenges Gaming Teams to engineer durable, responsive electromechanical platforms built for controlled head-to-head arena encounters. Exact weight classes and weapon/kinetic safety limits for 2027 remain configurable pending the official rulebook.',
-    challengeFocus: [
-      'Structural impact resilience and armor geometry',
-      'High-current brushless drivetrain and thermal management',
-      'Low-latency radio link fail-safes and emergency kill switches',
-    ],
-    technicalSpecs: [
-      { label: 'Weight Class', value: 'TBD — 2027 Official Spec' },
-      { label: 'Power Bus', value: 'Configurable (LiPo Safety Mandatory)' },
-      { label: 'Control Link', value: '2.4 GHz Failsafe Required' },
-    ],
-    participationNotes:
-      'Participation guidelines and scrutiny inspection checklists will be published prior to Level 02 hardware lock.',
-    glyphType: 'combat',
-  },
-  {
-    id: 'industrial-automation',
-    name: 'Industrial Automation',
-    accent: 'orange',
-    statusLabel: 'Category Terminal · Configurable 2027 Track',
-    shortDescription:
-      'Precision pick-and-place manipulators, conveyor synchronization, and repeatable kinematic accuracy.',
-    fullDescription:
-      'Industrial Automation focuses on multi-axis motion control, actuator repeatability, and automated material handling workflows modeled on modern smart factories.',
-    challengeFocus: [
-      'Inverse kinematics and multi-DOF arm calibration',
-      'Object sorting using optical or proximity sensing',
-      'Cycle-time optimization under strict repeatability tolerances',
-    ],
-    technicalSpecs: [
-      { label: 'Actuation', value: 'Servo / Stepper Closed-Loop (TBD)' },
-      { label: 'Payload Target', value: 'TBD — 2027 Official Spec' },
-      { label: 'Interface', value: 'Onboard Microcontroller / PLC' },
-    ],
-    participationNotes:
-      'Teams complete guided actuator training missions before attempting automated sorting trials.',
-    glyphType: 'industrial',
-  },
-  {
-    id: 'aerial-robotics',
-    name: 'Aerial Robotics',
-    accent: 'cyan',
-    statusLabel: 'Category Terminal · Configurable 2027 Track',
-    shortDescription:
-      'Stabilized flight controllers, optical flow hovering, and autonomous waypoint navigation.',
-    fullDescription:
-      'Aerial Robotics explores vertical flight dynamics, PID attitude stabilization, and constrained indoor/arena obstacle traversal using compact multi-rotor airframes.',
-    challengeFocus: [
-      'IMU sensor fusion and flight attitude tuning',
-      'Propeller guard safety and lightweight frame design',
-      'Precision landing pad detection and gate traversal',
-    ],
-    technicalSpecs: [
-      { label: 'Airframe Class', value: 'Micro / Ducted Arena Frame (TBD)' },
-      { label: 'Flight Zone', value: 'Netted Arena Enclosure' },
-      { label: 'Autonomy Level', value: 'Assisted or Full Autonomous (TBD)' },
-    ],
-    participationNotes:
-      'All aerial builds require mandatory prop-guard certification during Level 02 inspection.',
-    glyphType: 'aerial',
-  },
-  {
-    id: 'underwater-robotics',
-    name: 'Underwater Robotics',
-    accent: 'violet',
-    statusLabel: 'Category Terminal · Configurable 2027 Track',
-    shortDescription:
-      'Waterproof pressure housings, neutral buoyancy trim, and hydrodynamic thruster control.',
-    fullDescription:
-      'Underwater Robotics introduces marine engineering principles including sealed electronics enclosures, tethered or untethered thruster vectoring, and submerged task manipulation.',
-    challengeFocus: [
-      'IP68 enclosure sealing and leak-detection telemetry',
-      'Buoyancy balancing and 3-axis thruster mixing',
-      'Submerged ring retrieval or beacon alignment',
-    ],
-    technicalSpecs: [
-      { label: 'Environment', value: 'Test Tank / Aquatic Bay (TBD)' },
-      { label: 'Sealing Standard', value: 'Pressure-Tested Hull Required' },
-      { label: 'Tether / Power', value: 'TBD — 2027 Official Spec' },
-    ],
-    participationNotes:
-      'Dry-bench waterproofing verification is mandatory before any tank immersion test.',
-    glyphType: 'underwater',
-  },
-  {
-    id: 'autonomous-ground',
-    name: 'Autonomous Ground Systems',
-    accent: 'cyan',
-    statusLabel: 'Category Terminal · Core Reference Domain',
-    shortDescription:
-      'Sensor-guided rovers, maze pathfinding algorithms, and gesture-driven wireless mobility.',
-    fullDescription:
-      'Autonomous Ground Systems anchors the core SpecteQ participant journey — bridging microcontroller fundamentals, ultrasonic/IR sensor arrays, wireless gesture links, and algorithmic maze navigation.',
-    challengeFocus: [
-      'Real-time wall detection and path-planning logic',
-      'Wireless transmitter-to-rover gesture interpretation',
-      'Closed-loop wheel odometry and obstacle avoidance',
-    ],
-    technicalSpecs: [
-      { label: 'Reference Examples', value: 'Gesture Car & Maze Robot' },
-      { label: 'Compute', value: 'Onboard Microcontroller Only' },
-      { label: 'Arena Footprint', value: 'Configurable 2027 Track Spec' },
-    ],
-    participationNotes:
-      'Ideal entry pathway for Level 01 Training Missions and Level 02 Bot Unlocking.',
-    glyphType: 'ground',
-  },
-  {
-    id: 'ai-intelligent-systems',
-    name: 'AI & Intelligent Systems',
-    accent: 'pink',
-    statusLabel: 'Category Terminal · Configurable 2027 Track',
-    shortDescription:
-      'Edge computer vision, adaptive decision pipelines, and real-time environmental perception.',
-    fullDescription:
-      'AI & Intelligent Systems merges embedded robotics hardware with lightweight machine learning inference on edge accelerators for visual tracking, gesture classification, and adaptive strategy.',
-    challengeFocus: [
-      'Low-latency vision pipelines on edge compute boards',
-      'Real-time classification of arena markers or gestures',
-      'Sensor fusion combining vision with inertial feedback',
-    ],
-    technicalSpecs: [
-      { label: 'Compute Target', value: 'Edge AI / Embedded SBC (TBD)' },
-      { label: 'Inference Mode', value: 'Local Onboard Execution Only' },
-      { label: 'Telemetry', value: 'Offline Verification During Trials' },
-    ],
-    participationNotes:
-      'Cloud offloading is restricted in standard arena rounds unless explicitly stated in 2027 rules.',
-    glyphType: 'ai',
-  },
-];
-
 export const MISSION_TRACKS: MissionTrack[] = [
   {
     id: 'mission-gesture-car',
     playerSlot: 'PLAYER 01',
     codeName: 'CONTROL THE MACHINE',
     name: 'Gesture-Controlled Car',
+    missionType: 'Wireless Gesture Control',
     categoryTag: 'Reference Mission · Autonomous Ground Systems',
     isReferenceExample: true,
     difficulty: 'Entry',
@@ -329,12 +186,14 @@ export const MISSION_TRACKS: MissionTrack[] = [
       'Cross the finish gate within the qualifying time window',
     ],
     hardwareSummary: 'IMU Gesture Glove · Wireless Transceiver · Motor Driver · 4WD/2WD Chassis',
+    visualType: 'gesture',
   },
   {
     id: 'mission-pacman-maze',
     playerSlot: 'PLAYER 02',
     codeName: 'ESCAPE THE MAZE',
     name: 'PAC-MAN Maze Robot',
+    missionType: 'Autonomous Sensor Navigation',
     categoryTag: 'Reference Mission · Autonomous Navigation',
     isReferenceExample: true,
     difficulty: 'Intermediate',
@@ -368,40 +227,57 @@ export const MISSION_TRACKS: MissionTrack[] = [
       'Record an official verified run in The Robotics Arena',
     ],
     hardwareSummary: 'Sensor Array · Autonomous MCU · Encoder Motors · Compact Maze Chassis',
+    visualType: 'maze',
   },
   {
-    id: 'mission-2027-custom',
+    id: 'mission-robo-heist',
     playerSlot: 'PLAYER 03',
-    codeName: '2027 CONFIRMED TRACK SLOT',
-    name: '2027 Championship Track (Configurable)',
-    categoryTag: '2027 Expansion Slot · Editable Data Schema',
+    codeName: 'GRIPPER OBJECT COLLECTION',
+    name: 'ROBO HEIST',
+    missionType: 'Manual Robotics / Gripper-Based Object Collection',
+    categoryTag: 'Manual Robotics · Gripper-Based Object Collection',
     isReferenceExample: false,
-    difficulty: 'Configurable',
-    accent: 'violet',
+    difficulty: 'Manual Control',
+    accent: 'orange',
     shortDescription:
-      'Dedicated data-driven mission slot prepared for newly confirmed SpecteQ 2027 competition categories.',
+      'Operate a manual gripper-equipped robot to locate, collect, and deposit coloured tiles matching your assigned team colour within the round timer.',
     overview:
-      'SpecteQ 2027 supports modular mission packs across Combat Robotics, Industrial Automation, Aerial, Underwater, and Edge AI. This slot is intentionally left unfabricated until 2027 organizers lock official problem statements.',
+      'Teams operate manually controlled robots equipped with mechanical grippers. Each team or robot is assigned a specific colour while the arena contains multiple coloured tiles distributed across different locations.',
     objective:
-      '[TBD — Official 2027 Problem Statement to be published by the SpecteQ Organizing Committee.]',
+      'Collect all tiles matching your assigned team colour with your mechanical gripper and deposit them into the designated colour slot within the specified time limit.',
+    objectivesList: [
+      'Navigate the arena using manual robot control.',
+      'Identify and collect tiles matching the team’s assigned colour using the robot’s gripper.',
+      'Transport the collected tiles through the arena.',
+      'Deposit the tiles into the designated collection slot for that colour.',
+      'Complete the task within the specified time limit.',
+    ],
+    winningCondition:
+      'The competition takes place across multiple rounds. The first team to successfully complete the required collection and deposit task wins the round. The overall winner is determined by performance across the multiple rounds, according to the final competition scoring rules.',
     requirements: [
-      'Configurable hardware envelope [TBD — 2027 Official Spec]',
-      'Level 01 Training Mission completion prerequisite',
-      'Mandatory Level 02 safety and firmware scrutiny pass',
+      'Compact manually operated robotic vehicle with responsive drivetrain',
+      'Mechanical gripper assembly capable of gripping and releasing arena tiles securely',
+      'Assigned team colour identification and manual operator control link',
+      'Exact tile dimensions, round duration, and arena layout: [TBD — Final Competition Specs]',
     ],
     challenges: [
-      'Challenge parameters will populate directly from the centralized mission configuration',
-      'Arena scoring weights and qualification heats [TBD — 2027 Official Spec]',
+      'Precision manual driving between distributed tile pickup zones',
+      'Reliable gripper alignment, pickup, and drop-off inside designated colour slots',
+      'Navigating contested arena routes under round countdown pressure',
+      'Maintaining consistent performance across multiple competition rounds',
     ],
     rules: [
-      'Governed by the SpecteQ 2027 General Participation and Safety Standards.',
-      'Track-specific rules pending final organizer confirmation.',
+      'Teams must operate the robot strictly via manual control.',
+      'Only tiles matching the team’s assigned colour count toward the team’s designated collection slot.',
+      'Detailed round structure, scoring rules, and arena dimensions: [TBD — Official 2027 Rulebook].',
     ],
     completionCriteria: [
-      'Complete onboarding and team verification',
-      'Pass technical inspection prior to Robotics Arena entry',
+      'Collect assigned coloured tiles using the mechanical gripper',
+      'Transport and deposit tiles into the matching designated collection slot',
+      'Finish within the specified round time limit to contend for round victory',
     ],
-    hardwareSummary: 'Configurable Platform · Modular Sensor Bay · 2027 Official Spec Pending',
+    hardwareSummary: 'Manual Drivetrain · Mechanical Gripper · Colour Slot Targeting',
+    visualType: 'robo-heist',
   },
 ];
 
@@ -432,10 +308,10 @@ export const GAME_LEVELS: GameLevel[] = [
     defaultProgress: 65,
     defaultStatus: 'In Progress',
     summary:
-      'Workshops are transformed into hands-on Training Missions. Master microcontroller fundamentals, sensor calibration, wireless links, and motor driver circuits.',
+      'Workshops are transformed into hands-on Training Missions. Master microcontroller fundamentals, sensor calibration, wireless links, and mechanical actuation.',
     deliverables: [
       'Complete electronics & firmware fundamentals mission',
-      'Calibrate sensor inputs and actuator response',
+      'Calibrate sensor inputs and actuator / gripper response',
       'Pass basic bench-test checkpoint to unlock build phase',
     ],
     achievementTitle: 'Level 01 Cleared · Systems Trained',
@@ -449,10 +325,10 @@ export const GAME_LEVELS: GameLevel[] = [
     defaultProgress: 30,
     defaultStatus: 'Locked',
     summary:
-      'Transition from training bench to real engineering. Assemble your robot chassis, integrate sensors, flash autonomous or gesture control firmware, and verify Mission Complete.',
+      'Transition from training bench to real engineering. Assemble your robot chassis, integrate sensors or grippers, tune your control system, and verify Mission Complete.',
     deliverables: [
       'Assemble mechanical chassis and power distribution',
-      'Flash and tune mission control algorithms',
+      'Flash and tune mission control algorithms or manual gripper linkages',
       'Pass hardware scrutiny and pre-arena test trials',
     ],
     achievementTitle: 'Bot Unlocked · Mission Complete',
@@ -466,7 +342,7 @@ export const GAME_LEVELS: GameLevel[] = [
     defaultProgress: 0,
     defaultStatus: 'Locked',
     summary:
-      'The ultimate showdown. Deploy your engineered machine inside The Robotics Arena, compete in timed heats and knockout rounds, and claim High Score Champion status.',
+      'The ultimate showdown. Deploy your engineered machine inside The Robotics Arena, compete in timed heats and multi-round matches, and claim High Score Champion status.',
     deliverables: [
       'Complete official arena qualification heat',
       'Compete in Final Boss arena challenges',
@@ -509,7 +385,7 @@ export const TIMELINE_MILESTONES: TimelineMilestone[] = [
     summary: 'Guided interactive workshops covering sensors, embedded code, and motor control.',
     details: [
       'Hands-on microcontroller and sensor lab sessions',
-      'Mentor office hours for firmware debugging',
+      'Mentor office hours for firmware and mechanical debugging',
     ],
     accent: 'pink',
   },
@@ -520,8 +396,8 @@ export const TIMELINE_MILESTONES: TimelineMilestone[] = [
     dateLabel: 'Date TBD · Level 02 Build Sprint',
     summary: 'Gaming Teams fabricate, wire, and program their competition bots.',
     details: [
-      'Chassis assembly, wiring, and power system integration',
-      'Control loop tuning and autonomous strategy iteration',
+      'Chassis assembly, gripper/sensor integration, and wiring',
+      'Control loop tuning and strategy iteration',
     ],
     accent: 'orange',
   },
@@ -532,7 +408,7 @@ export const TIMELINE_MILESTONES: TimelineMilestone[] = [
     dateLabel: 'Date TBD · Pre-Arena Check',
     summary: 'Dry-run arena practice, hardware compliance checks, and calibration.',
     details: [
-      'Dimensions, battery safety, and wireless link inspection',
+      'Dimensions, battery safety, and control link inspection',
       'Practice runs on official calibration tracks',
     ],
     accent: 'cyan',
@@ -544,7 +420,7 @@ export const TIMELINE_MILESTONES: TimelineMilestone[] = [
     dateLabel: 'Date TBD · Level 03 Main Event',
     summary: 'Live qualification heats and Final Boss competition inside The Robotics Arena.',
     details: [
-      'Time trials, maze runs, and head-to-head finals',
+      'Time trials, maze runs, and multi-round ROBO HEIST finals',
       'Live leaderboard scoring by official marshals',
     ],
     accent: 'pink',
@@ -569,7 +445,7 @@ export const ARENA_ZONES = [
     zoneLabel: 'Zone 01 · Pit Bay & Scrutiny',
     title: 'Hardware Calibration & Safety Gate',
     description:
-      'Every bot undergoes pre-match voltage, chassis dimension, and wireless failsafe verification before entering the active arena floor.',
+      'Every bot undergoes pre-match voltage, chassis dimension, and control failsafe verification before entering the active arena floor.',
     specs: 'Mandatory Inspection · Calibration Bench Access',
   },
   {
@@ -577,7 +453,7 @@ export const ARENA_ZONES = [
     zoneLabel: 'Zone 02 · Qualification Circuit',
     title: 'Timed Trials & Mission Scoring',
     description:
-      'Gaming Teams execute scored runs across designated mission obstacles or maze corridors to seed into the championship bracket.',
+      'Gaming Teams execute scored runs across designated mission obstacles, maze corridors, or tile collection zones to seed into the championship bracket.',
     specs: 'Timed Precision Runs · Marshal Verified',
   },
   {
@@ -615,10 +491,10 @@ export const DEMO_LEADERBOARD: LeaderboardEntry[] = [
     rank: 3,
     teamName: 'Oceanic Servo',
     playerLead: 'Demo Team C',
-    trackCategory: 'Autonomous Systems',
+    trackCategory: 'ROBO HEIST',
     completedMissions: 3,
     totalMissions: 4,
-    achievementStatus: 'Level 03 Finalist (Demo)',
+    achievementStatus: 'Round Winner (Demo)',
     score: 2450,
   },
   {
@@ -643,9 +519,9 @@ export const DEMO_LEADERBOARD: LeaderboardEntry[] = [
   },
   {
     rank: 6,
-    teamName: 'Hyperdrive Lab',
+    teamName: 'Vault Grippers',
     playerLead: 'Demo Team F',
-    trackCategory: 'Autonomous Systems',
+    trackCategory: 'ROBO HEIST',
     completedMissions: 2,
     totalMissions: 4,
     achievementStatus: 'Training Complete (Demo)',
@@ -683,14 +559,14 @@ export const RULE_GROUPS: RuleGroup[] = [
     statusNote: 'Aligned with SpecteQ Level Progression',
     items: [
       'Teams must complete required Level 01 Training Mission checkpoints to unlock Level 02 build verification.',
-      'Each mission track specifies whether human-in-the-loop control (e.g., gesture interface) or full autonomy is required.',
+      'Each mission track specifies whether manual control (such as ROBO HEIST), gesture input, or full autonomy is required.',
       'Confirmed 2027 track-specific constraints and penalty matrices: [Placeholder — Published Per Confirmed Track].',
     ],
   },
   {
     id: 'robot-specs',
     title: 'Robot Specifications',
-    summary: 'Hardware safety, battery enclosures, onboard compute, and arena preservation constraints.',
+    summary: 'Hardware safety, battery enclosures, onboard systems, and arena preservation constraints.',
     statusNote: 'Safety Standards Mandatory · Exact Limits TBD',
     items: [
       'Robots must pass physical scrutiny inspection prior to entering The Robotics Arena.',
@@ -702,23 +578,23 @@ export const RULE_GROUPS: RuleGroup[] = [
   {
     id: 'competition',
     title: 'Competition Guidelines',
-    summary: 'Match flow, scrutiny calls, time-trial restarts, and referee decisions.',
+    summary: 'Match flow, scrutiny calls, time-trial restarts, multi-round finals, and referee decisions.',
     statusNote: 'Arena Protocol Framework',
     items: [
       'Teams must report to the staging bay ahead of their scheduled heat or forfeit the slot.',
       'Calibration windows prior to official scored runs are strictly timed by Arena Marshals.',
-      'Number of official attempts, timeout allowances, and dispute resolution procedure: [Placeholder — 2027 Match Rules].',
+      'Number of official rounds, timeout allowances, and dispute resolution procedure: [Placeholder — 2027 Match Rules].',
     ],
   },
   {
     id: 'scoring',
     title: 'Scoring Criteria',
-    summary: 'How mission completion, run time, accuracy, and level bonuses determine High Score rankings.',
+    summary: 'How mission completion, run time, round wins, and level bonuses determine High Score rankings.',
     statusNote: 'Formula Weights Configurable for 2027',
     items: [
       'Leaderboard placement combines verified Mission Complete checkpoints and official Robotics Arena performance.',
-      'Time bonuses, obstacle/wall-contact deductions, and tie-breaker criteria: [Placeholder — 2027 Scoring Matrix].',
-      'Top-scoring Gaming Teams in each confirmed category earn the High Score Champion title.',
+      'Time bonuses, round win weights, and tie-breaker criteria: [Placeholder — 2027 Scoring Matrix].',
+      'Top-scoring Gaming Teams in each confirmed mission earn the High Score Champion title.',
     ],
   },
 ];

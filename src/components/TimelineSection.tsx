@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Calendar } from 'lucide-react';
 import { TIMELINE_MILESTONES } from '../data/specteqData';
 import { ACCENT_HEX } from './ViceCityArtwork';
+import { Reveal } from './Reveal';
 
 export const TimelineSection: React.FC = () => {
   const [selectedId, setSelectedId] = useState<string>(TIMELINE_MILESTONES[0].id);
@@ -11,11 +12,11 @@ export const TimelineSection: React.FC = () => {
   return (
     <section
       id="timeline"
-      className="relative py-20 lg:py-28 bg-[#0B0A19] border-b border-white/10 coastal-grid"
+      className="relative py-20 lg:py-28 border-b border-white/15 bg-[#0B0A19]/20"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      <Reveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div className="space-y-3 max-w-2xl">
+          <div className="liquid-glass-subtle rounded-2xl p-6 max-w-2xl space-y-2.5">
             <p className="font-subheading font-semibold text-sm tracking-[0.18em] text-[#FF875E]">
               2027 SEASON ROADMAP
             </p>
@@ -25,18 +26,18 @@ export const TimelineSection: React.FC = () => {
             >
               Event Timeline & Milestones
             </h2>
-            <p className="text-base text-[#B8B4CA]">
+            <p className="text-sm sm:text-base text-white/85">
               Follow the progression from initial registration through final championship
               awards. Dates remain configurable until the official 2027 schedule is locked.
             </p>
           </div>
-          <div className="inline-flex items-center gap-2 text-xs text-[#B8B4CA]">
+          <div className="inline-flex items-center gap-2 text-xs text-white/85 liquid-glass-subtle rounded-xl px-4 py-2.5 self-start md:self-auto">
             <Calendar className="w-4 h-4 text-[#00E5FF]" />
             <span>Dates TBD · Configurable 2027 Schedule</span>
           </div>
         </div>
 
-        {/* Horizontal Scrollable Milestone Track */}
+        {/* Horizontal Milestone Track */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-3">
           {TIMELINE_MILESTONES.map((milestone) => {
             const isSelected = milestone.id === selectedId;
@@ -46,10 +47,10 @@ export const TimelineSection: React.FC = () => {
                 key={milestone.id}
                 type="button"
                 onClick={() => setSelectedId(milestone.id)}
-                className={`text-left rounded-xl p-4 transition-all duration-200 border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00E5FF] ${
+                className={`text-left rounded-xl p-4 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00E5FF] ${
                   isSelected
-                    ? 'liquid-glass border-[#00E5FF]/60 -translate-y-0.5'
-                    : 'bg-[#15132B]/70 border-white/10 hover:border-white/25'
+                    ? 'liquid-glass ring-1 ring-[#00E5FF]/65 -translate-y-0.5'
+                    : 'liquid-glass-subtle hover:border-white/30'
                 }`}
               >
                 <span
@@ -61,7 +62,7 @@ export const TimelineSection: React.FC = () => {
                 <span className="block font-display font-bold text-sm text-white leading-snug">
                   {milestone.title}
                 </span>
-                <span className="block text-xs text-[#B8B4CA] mt-2 truncate">
+                <span className="block text-xs text-white/75 mt-2 truncate">
                   {milestone.dateLabel}
                 </span>
               </button>
@@ -78,12 +79,12 @@ export const TimelineSection: React.FC = () => {
             <h3 className="font-display font-bold text-xl sm:text-2xl text-white">
               {selectedMilestone.title}
             </h3>
-            <p className="text-sm sm:text-base text-[#B8B4CA] leading-relaxed">
+            <p className="text-sm sm:text-base text-white/85 leading-relaxed">
               {selectedMilestone.summary}
             </p>
           </div>
 
-          <ul className="space-y-2 text-sm text-[#B8B4CA] md:min-w-[300px]">
+          <ul className="space-y-2 text-sm text-white/85 md:min-w-[300px]">
             {selectedMilestone.details.map((detail) => (
               <li key={detail} className="flex items-start gap-2.5">
                 <span className="text-[#FF3CAC] mt-0.5">•</span>
@@ -92,7 +93,7 @@ export const TimelineSection: React.FC = () => {
             ))}
           </ul>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 };

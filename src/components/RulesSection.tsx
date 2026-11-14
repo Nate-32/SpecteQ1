@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { RULE_GROUPS } from '../data/specteqData';
+import { Reveal } from './Reveal';
 
 export const RulesSection: React.FC = () => {
   const [openId, setOpenId] = useState<string | null>(RULE_GROUPS[0].id);
@@ -12,10 +13,10 @@ export const RulesSection: React.FC = () => {
   return (
     <section
       id="rules"
-      className="relative py-20 lg:py-28 bg-[#0B0A19] border-b border-white/10 coastal-grid"
+      className="relative py-20 lg:py-28 border-b border-white/15 bg-[#0B0A19]/20"
     >
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-        <div className="space-y-3 max-w-2xl">
+      <Reveal className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        <div className="liquid-glass-subtle rounded-2xl p-6 max-w-2xl space-y-2.5">
           <p className="font-subheading font-semibold text-sm tracking-[0.18em] text-[#FF3CAC]">
             COMPETITION GOVERNANCE
           </p>
@@ -25,7 +26,7 @@ export const RulesSection: React.FC = () => {
           >
             Rules and Guidelines
           </h2>
-          <p className="text-base text-[#B8B4CA]">
+          <p className="text-sm sm:text-base text-white/85">
             Confirmed structural standards are listed alongside clearly marked 2027
             configurable rulebook slots. Expand any panel to inspect details.
           </p>
@@ -39,7 +40,7 @@ export const RulesSection: React.FC = () => {
               <div
                 key={group.id}
                 className={`liquid-glass rounded-2xl overflow-hidden transition-colors ${
-                  isOpen ? 'border-[#00E5FF]/45' : ''
+                  isOpen ? 'ring-1 ring-[#00E5FF]/50' : ''
                 }`}
               >
                 <button
@@ -47,10 +48,10 @@ export const RulesSection: React.FC = () => {
                   onClick={() => handleToggle(group.id)}
                   aria-expanded={isOpen}
                   aria-controls={`rule-panel-${group.id}`}
-                  className="w-full min-h-[64px] px-6 py-4 flex items-center justify-between gap-4 text-left hover:bg-white/[0.02] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00E5FF]"
+                  className="w-full min-h-[64px] px-6 py-4 flex items-center justify-between gap-4 text-left hover:bg-white/[0.04] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00E5FF]"
                 >
                   <div className="space-y-1">
-                    <div className="flex flex-wrap items-center gap-2 text-xs text-[#B8B4CA]">
+                    <div className="flex flex-wrap items-center gap-2 text-xs text-white/75">
                       <span className="font-mono-tabular text-[#00E5FF] font-semibold">
                         0{idx + 1}.
                       </span>
@@ -62,7 +63,7 @@ export const RulesSection: React.FC = () => {
                   </div>
 
                   <ChevronDown
-                    className={`w-5 h-5 text-[#B8B4CA] shrink-0 transition-transform duration-200 ${
+                    className={`w-5 h-5 text-white/75 shrink-0 transition-transform duration-200 ${
                       isOpen ? 'rotate-180 text-[#00E5FF]' : ''
                     }`}
                   />
@@ -71,9 +72,9 @@ export const RulesSection: React.FC = () => {
                 {isOpen && (
                   <div
                     id={`rule-panel-${group.id}`}
-                    className="px-6 pb-6 pt-2 border-t border-white/10 space-y-4"
+                    className="px-6 pb-6 pt-3 border-t border-white/15 space-y-4"
                   >
-                    <p className="text-sm text-[#B8B4CA]">{group.summary}</p>
+                    <p className="text-sm text-white/80">{group.summary}</p>
                     <ul className="space-y-2.5 text-sm text-white/90">
                       {group.items.map((item) => (
                         <li key={item} className="flex items-start gap-2.5">
@@ -88,7 +89,7 @@ export const RulesSection: React.FC = () => {
             );
           })}
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 };

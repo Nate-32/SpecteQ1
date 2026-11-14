@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
+import { ASSET_PATHS } from '../data/specteqData';
 
 interface NavbarProps {
   activeSection: string;
@@ -39,37 +40,21 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-[#0B0A19]/75 backdrop-blur-xl border-b border-white/10">
+    <header className="sticky top-0 z-50 w-full liquid-glass-nav">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-6">
-        {/* Zone 1: Clean Brand Wordmark */}
+        {/* Zone 1: Official Supplied SpecteQ Emblem */}
         <a
           href="#home"
-          className="flex items-center gap-2.5 text-white whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00E5FF] rounded-md px-1"
+          aria-label="SpecteQ 2027 Home"
+          className="flex items-center gap-3 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00E5FF] rounded-lg"
         >
-          <svg
-            width="28"
-            height="28"
-            viewBox="0 0 32 32"
-            fill="none"
-            aria-hidden="true"
-            className="shrink-0"
-          >
-            <polygon
-              points="16,2 29,9.5 29,22.5 16,30 3,22.5 3,9.5"
-              stroke="#00E5FF"
-              strokeWidth="2"
-              fill="rgba(21, 19, 43, 0.9)"
-            />
-            <polygon
-              points="16,8 23,12 23,20 16,24 9,20 9,12"
-              stroke="#FF3CAC"
-              strokeWidth="1.5"
-              fill="rgba(255, 60, 172, 0.14)"
-            />
-            <circle cx="16" cy="16" r="2.5" fill="#00E5FF" />
-          </svg>
-          <span className="font-display font-extrabold text-lg tracking-wider">
-            SPECTEQ
+          <img
+            src={ASSET_PATHS.logo}
+            alt="SpecteQ Logo"
+            className="h-11 w-11 object-contain rounded-lg shrink-0"
+          />
+          <span className="font-display font-extrabold italic text-lg tracking-wider text-white whitespace-nowrap hidden sm:inline">
+            SpecteQ
           </span>
         </a>
 
@@ -87,7 +72,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
                 className={`relative py-2 text-sm font-medium transition-colors whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00E5FF] rounded ${
                   isActive
                     ? 'text-[#00E5FF]'
-                    : 'text-[#B8B4CA] hover:text-white'
+                    : 'text-white/80 hover:text-white'
                 }`}
               >
                 {item.label}
@@ -108,7 +93,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
         <div className="flex items-center gap-3 shrink-0">
           <a
             href="#register"
-            className="hidden sm:inline-flex items-center justify-center px-5 py-2.5 rounded-lg text-sm font-semibold text-[#0B0A19] bg-gradient-to-r from-[#00E5FF] to-[#9B5CFF] hover:from-[#33ECFF] hover:to-[#FF3CAC] hover:text-white transition-all duration-200 whitespace-nowrap shrink-0 shadow-[0_0_24px_-6px_rgba(0,229,255,0.55)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00E5FF]"
+            className="hidden sm:inline-flex items-center justify-center px-5 py-2.5 rounded-xl text-sm font-semibold text-[#0B0A19] bg-gradient-to-r from-[#00E5FF] to-[#9B5CFF] hover:from-[#4DF0FF] hover:to-[#FF3CAC] hover:text-white transition-all duration-200 whitespace-nowrap shrink-0 shadow-[0_0_24px_-6px_rgba(0,229,255,0.55)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00E5FF]"
           >
             Join the Game
           </a>
@@ -119,7 +104,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
             aria-expanded={mobileOpen}
             aria-controls="mobile-navigation-drawer"
             aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
-            className="xl:hidden inline-flex items-center justify-center w-11 h-11 rounded-lg border border-white/15 bg-[#15132B]/70 text-white hover:border-[#00E5FF]/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00E5FF]"
+            className="xl:hidden inline-flex items-center justify-center w-11 h-11 rounded-xl border border-white/20 bg-white/10 backdrop-blur-md text-white hover:border-[#00E5FF]/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00E5FF]"
           >
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -127,7 +112,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
       </div>
 
       {/* Subtle Scroll Progress Hairline */}
-      <div className="h-[2px] w-full bg-white/5" aria-hidden="true">
+      <div className="h-[2px] w-full bg-white/10" aria-hidden="true">
         <div
           className="h-full bg-gradient-to-r from-[#00E5FF] via-[#9B5CFF] to-[#FF3CAC] transition-[width] duration-75"
           style={{ width: `${scrollProgress}%` }}
@@ -139,7 +124,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
         <nav
           id="mobile-navigation-drawer"
           aria-label="Mobile Navigation"
-          className="xl:hidden bg-[#15132B]/95 backdrop-blur-2xl border-b border-white/10 px-4 py-4 space-y-1"
+          className="xl:hidden bg-[#0B0A19]/80 backdrop-blur-2xl border-b border-white/15 px-4 py-4 space-y-1"
         >
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {NAV_ITEMS.map((item) => {
@@ -149,10 +134,10 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
                   key={item.id}
                   href={`#${item.id}`}
                   onClick={handleNavClick}
-                  className={`min-h-[44px] flex items-center px-3 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
+                  className={`min-h-[44px] flex items-center px-3 rounded-xl text-sm font-medium transition-colors whitespace-nowrap ${
                     isActive
-                      ? 'bg-[#211B3D] text-[#00E5FF] border border-[#00E5FF]/35'
-                      : 'text-[#B8B4CA] hover:text-white hover:bg-white/5'
+                      ? 'bg-white/15 text-[#00E5FF] border border-[#00E5FF]/40'
+                      : 'text-[#B8B4CA] hover:text-white hover:bg-white/10'
                   }`}
                 >
                   {item.label}
@@ -164,7 +149,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
             <a
               href="#register"
               onClick={handleNavClick}
-              className="w-full min-h-[44px] inline-flex items-center justify-center px-5 py-2.5 rounded-lg text-sm font-semibold text-[#0B0A19] bg-gradient-to-r from-[#00E5FF] to-[#FF3CAC]"
+              className="w-full min-h-[44px] inline-flex items-center justify-center px-5 py-2.5 rounded-xl text-sm font-semibold text-[#0B0A19] bg-gradient-to-r from-[#00E5FF] to-[#FF3CAC]"
             >
               Join the Game
             </a>

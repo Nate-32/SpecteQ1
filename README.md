@@ -37,19 +37,19 @@
 │   └── 404.html                # Static fallback redirect for GitHub Pages
 ├── src/
 │   ├── components/
-│   │   ├── AboutSection.tsx        # Event concept & LEARN -> BUILD -> TEST -> COMPETE journey
+│   │   ├── AboutSection.tsx        # Event concept, hardware blueprint & journey
 │   │   ├── ArenaSection.tsx        # The Robotics Arena showcase & zone cards
-│   │   ├── CategoriesSection.tsx   # 6 liquid-glass robotics terminals + detail modal
-│   │   ├── Footer.tsx              # Branding, quick links, configurable socials
-│   │   ├── HeroSection.tsx         # Vice City coastal backdrop & live Player 01 HUD
+│   │   ├── Footer.tsx              # Branding, logo, quick links, configurable socials
+│   │   ├── HeroSection.tsx         # Hero typography lockup & live Player 01 HUD
 │   │   ├── LeaderboardSection.tsx  # Filterable/sortable demo standings terminal
 │   │   ├── LevelsSection.tsx       # Interactive 4-level progression & detail inspector
-│   │   ├── MissionsSection.tsx     # Player mission selector + mission briefing modal
-│   │   ├── Navbar.tsx              # Sticky glass navigation + scroll progress hairline
+│   │   ├── MissionsSection.tsx     # Player mission selector (incl. ROBO HEIST) + modal
+│   │   ├── Navbar.tsx              # Sticky liquid-glass navigation + official logo
 │   │   ├── RegistrationSection.tsx # Client-validated registration preview & contacts
+│   │   ├── Reveal.tsx              # Lightweight scroll-reveal wrapper
 │   │   ├── RulesSection.tsx        # Expandable rules & guidelines accordions
 │   │   ├── TimelineSection.tsx     # Configurable 7-phase season timeline
-│   │   └── ViceCityArtwork.tsx     # Original vector skyline, sports car, & schematics
+│   │   └── ViceCityArtwork.tsx     # Mission visual previews (ROBO HEIST, Gesture, Maze)
 │   ├── data/
 │   │   └── specteqData.ts          # Centralized, editable 2027 event data & placeholders
 │   ├── App.tsx
@@ -65,7 +65,7 @@
 
 ## Configurable Event Content
 
-All competition dates, venue details, organizer contacts, robotics category specs, mission tracks (including reference examples *Gesture-Controlled Car* and *PAC-MAN Maze Robot*), rules, and demonstration leaderboard entries are centralized in:
+All competition dates, venue details, organizer contacts, mission tracks (*Gesture-Controlled Car*, *PAC-MAN Maze Robot*, and *ROBO HEIST*), rules, and demonstration leaderboard entries are centralized in:
 
 ```text
 src/data/specteqData.ts

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { AboutSection } from './components/AboutSection';
 import { ArenaSection } from './components/ArenaSection';
-import { CategoriesSection } from './components/CategoriesSection';
 import { Footer } from './components/Footer';
 import { HeroSection, PlayerSessionState } from './components/HeroSection';
 import { LeaderboardSection } from './components/LeaderboardSection';
@@ -11,12 +10,11 @@ import { Navbar } from './components/Navbar';
 import { RegistrationSection } from './components/RegistrationSection';
 import { RulesSection } from './components/RulesSection';
 import { TimelineSection } from './components/TimelineSection';
-import { MissionTrack } from './data/specteqData';
+import { ASSET_PATHS, MissionTrack } from './data/specteqData';
 
 const TRACKED_SECTIONS = [
   'home',
   'about',
-  'categories',
   'missions',
   'levels',
   'timeline',
@@ -45,9 +43,7 @@ export default function App() {
         for (const entry of entries) {
           if (entry.isIntersecting) {
             const id = entry.target.id;
-            if (id === 'categories') {
-              setActiveSection('about');
-            } else if (id === 'timeline') {
+            if (id === 'timeline') {
               setActiveSection('levels');
             } else if (id === 'register') {
               setActiveSection('contact');
@@ -111,31 +107,53 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B0A19] text-white flex flex-col">
-      <Navbar activeSection={activeSection} />
-      <main className="flex-1">
-        <HeroSection playerState={playerState} />
-        <AboutSection />
-        <CategoriesSection />
-        <MissionsSection
-          activeMissionId={activeMission?.id ?? null}
-          onStartMission={handleStartMission}
+    <div className="relative min-h-screen text-white flex flex-col">
+      {/* Stationary Full-Page Vice City Wallpaper Layer */}
+      <div
+        className="fixed inset-0 z-0 pointer-events-none select-none overflow-hidden"
+        aria-hidden="true"
+      >
+        <img
+          src={ASSET_PATHS.background}
+          alt=""
+          className="w-full h-full object-cover object-center"
         />
-        <LevelsSection
-          unlockedUpTo={unlockedLevel}
-          activeMissionName={activeMission?.name ?? playerState.missionName}
-          onUnlockNextLevel={handleUnlockNextLevel}
+        {/* Subtle atmospheric dark tint so glass panels keep crisp contrast while sunset & neon lights shine through */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'linear-gradient(180deg, rgba(11, 10, 25, 0.24) 0%, rgba(11, 10, 25, 0.34) 55%, rgba(11, 10, 25, 0.48) 100%)',
+          }}
         />
-        <TimelineSection />
-        <ArenaSection />
-        <LeaderboardSection />
-        <RulesSection />
-        <RegistrationSection
-          selectedMissionId={activeMission?.id ?? null}
-          onRegistrationComplete={handleRegistrationComplete}
-        />
-      </main>
-      <Footer />
+      </div>
+
+      {/* Foreground Content Scrolling Over Stationary Background */}
+      <div className="relative z-10 flex flex-col min-h-screen">
+        <Navbar activeSection={activeSection} />
+        <main className="flex-1">
+          <HeroSection playerState={playerState} />
+          <AboutSection />
+          <MissionsSection
+            activeMissionId={activeMission?.id ?? null}
+            onStartMission={handleStartMission}
+          />
+          <LevelsSection
+            unlockedUpTo={unlockedLevel}
+            activeMissionName={activeMission?.name ?? playerState.missionName}
+            onUnlockNextLevel={handleUnlockNextLevel}
+          />
+          <TimelineSection />
+          <ArenaSection />
+          <LeaderboardSection />
+          <RulesSection />
+          <RegistrationSection
+            selectedMissionId={activeMission?.id ?? null}
+            onRegistrationComplete={handleRegistrationComplete}
+          />
+        </main>
+        <Footer />
+      </div>
     </div>
   );
 }

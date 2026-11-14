@@ -1,11 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CheckCircle2, Mail, Phone, RotateCcw, Send } from 'lucide-react';
-import {
-  CONTACT_COORDINATORS,
-  MISSION_TRACKS,
-  ROBOTICS_CATEGORIES,
-} from '../data/specteqData';
+import { CONTACT_COORDINATORS, MISSION_TRACKS } from '../data/specteqData';
 import { ACCENT_HEX } from './ViceCityArtwork';
+import { Reveal } from './Reveal';
 
 interface RegistrationFormData {
   playerName: string;
@@ -14,7 +11,6 @@ interface RegistrationFormData {
   teamName: string;
   teamSize: string;
   missionId: string;
-  categoryId: string;
   agreed: boolean;
 }
 
@@ -34,16 +30,20 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
     teamName: '',
     teamSize: '2',
     missionId: selectedMissionId || MISSION_TRACKS[0].id,
-    categoryId: ROBOTICS_CATEGORIES[4].id,
     agreed: false,
   });
+
+  useEffect(() => {
+    if (selectedMissionId) {
+      setFormData((prev) => ({ ...prev, missionId: selectedMissionId }));
+    }
+  }, [selectedMissionId]);
 
   const [errors, setErrors] = useState<Partial<Record<keyof RegistrationFormData, string>>>({});
   const [submittedRecord, setSubmittedRecord] = useState<{
     playerName: string;
     teamName: string;
     missionName: string;
-    categoryName: string;
     email: string;
     passCode: string;
   } | null>(null);
@@ -77,9 +77,6 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
 
     const chosenMission =
       MISSION_TRACKS.find((m) => m.id === formData.missionId) || MISSION_TRACKS[0];
-    const chosenCategory =
-      ROBOTICS_CATEGORIES.find((c) => c.id === formData.categoryId) ||
-      ROBOTICS_CATEGORIES[0];
 
     const passCode = `SQ27-${formData.teamName
       .trim()
@@ -91,7 +88,6 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
       playerName: formData.playerName.trim(),
       teamName: formData.teamName.trim(),
       missionName: chosenMission.name,
-      categoryName: chosenCategory.name,
       email: formData.email.trim(),
       passCode,
     });
@@ -110,35 +106,37 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
   return (
     <section
       id="register"
-      className="relative py-20 lg:py-28 bg-[#15132B] border-b border-white/10"
+      className="relative py-20 lg:py-28 border-b border-white/15 bg-[#0B0A19]/30"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
+      <Reveal className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
         {/* Registration Header & Form Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           {/* Left Column: Registration Pitch */}
           <div className="lg:col-span-5 space-y-5">
-            <p className="font-subheading font-semibold text-sm tracking-[0.18em] text-[#00E5FF]">
-              LEVEL 00 · PLAYER ENTRY
-            </p>
-            <h2
-              className="font-display font-black text-2xl sm:text-4xl text-white leading-tight"
-              style={{ textWrap: 'balance' }}
-            >
-              INSERT COIN. JOIN THE GAME.
-            </h2>
-            <p className="text-base text-[#B8B4CA] leading-relaxed">
-              Register your Player profile and Gaming Team to begin Level 01 Training
-              Missions. Select a reference track or reserve your spot for confirmed 2027
-              competition categories.
-            </p>
+            <div className="liquid-glass rounded-2xl p-6 sm:p-8 space-y-4">
+              <p className="font-subheading font-semibold text-sm tracking-[0.18em] text-[#00E5FF]">
+                LEVEL 00 · PLAYER ENTRY
+              </p>
+              <h2
+                className="font-display font-black text-2xl sm:text-4xl text-white leading-tight"
+                style={{ textWrap: 'balance' }}
+              >
+                INSERT COIN. JOIN THE GAME.
+              </h2>
+              <p className="text-base text-white/85 leading-relaxed">
+                Register your Player profile and Gaming Team to begin Level 01 Training
+                Missions. Choose from Gesture-Controlled Car, PAC-MAN Maze Robot, or
+                ROBO HEIST.
+              </p>
+            </div>
 
-            <div className="liquid-glass-subtle rounded-2xl p-5 space-y-3">
+            <div className="liquid-glass-subtle rounded-2xl p-5 space-y-2.5">
               <h3 className="font-subheading font-bold text-sm tracking-wider text-[#FF875E]">
                 REGISTRATION WORKFLOW NOTICE
               </h3>
-              <p className="text-sm text-[#B8B4CA] leading-relaxed">
+              <p className="text-sm text-white/80 leading-relaxed">
                 This static deployment validates your registration locally and generates an
-                instant Player Pass preview. Connect your organizer Google Form or backend
+                instant Player Pass preview. Connect your organizer form or backend
                 endpoint before opening live 2027 admissions—no submissions are stored
                 remotely here.
               </p>
@@ -159,44 +157,38 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
                       <h3 className="font-display font-bold text-2xl text-white">
                         Player Pass Generated
                       </h3>
-                      <p className="text-sm text-[#B8B4CA]">
+                      <p className="text-sm text-white/80">
                         Your Player 01 HUD has been updated locally with your Gaming Team
                         and selected mission.
                       </p>
                     </div>
                   </div>
 
-                  <div className="bg-[#0B0A19]/75 border border-white/15 rounded-xl p-5 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                  <div className="bg-[#0B0A19]/55 border border-white/15 rounded-xl p-5 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm backdrop-blur-md">
                     <div>
-                      <span className="block text-xs text-[#B8B4CA]">Player Lead</span>
+                      <span className="block text-xs text-white/70">Player Lead</span>
                       <span className="font-semibold text-white">
                         {submittedRecord.playerName}
                       </span>
                     </div>
                     <div>
-                      <span className="block text-xs text-[#B8B4CA]">Gaming Team</span>
+                      <span className="block text-xs text-white/70">Gaming Team</span>
                       <span className="font-semibold text-white">
                         {submittedRecord.teamName}
                       </span>
                     </div>
                     <div>
-                      <span className="block text-xs text-[#B8B4CA]">Mission Track</span>
+                      <span className="block text-xs text-white/70">Mission Track</span>
                       <span className="font-semibold text-[#00E5FF]">
                         {submittedRecord.missionName}
                       </span>
                     </div>
                     <div>
-                      <span className="block text-xs text-[#B8B4CA]">Domain Category</span>
-                      <span className="font-semibold text-white">
-                        {submittedRecord.categoryName}
-                      </span>
-                    </div>
-                    <div>
-                      <span className="block text-xs text-[#B8B4CA]">Contact Email</span>
+                      <span className="block text-xs text-white/70">Contact Email</span>
                       <span className="text-white">{submittedRecord.email}</span>
                     </div>
-                    <div>
-                      <span className="block text-xs text-[#B8B4CA]">Preview Pass ID</span>
+                    <div className="sm:col-span-2">
+                      <span className="block text-xs text-white/70">Preview Pass ID</span>
                       <span className="font-mono-tabular font-bold text-[#FF3CAC]">
                         {submittedRecord.passCode}
                       </span>
@@ -206,7 +198,7 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
                   <button
                     type="button"
                     onClick={handleReset}
-                    className="min-h-[44px] inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-white/10 hover:bg-white/20 border border-white/15 transition-colors"
+                    className="min-h-[44px] inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-white/10 hover:bg-white/20 border border-white/20 transition-colors"
                   >
                     <RotateCcw className="w-4 h-4" />
                     <span>Edit or Submit Another Preview</span>
@@ -230,7 +222,7 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
                           setFormData({ ...formData, playerName: e.target.value })
                         }
                         placeholder="e.g. Aarav Patel"
-                        className="w-full min-h-[44px] px-4 rounded-xl bg-[#0B0A19]/80 border border-white/15 text-sm text-white placeholder-[#B8B4CA]/50 focus:outline-none focus:border-[#00E5FF]"
+                        className="w-full min-h-[44px] px-4 rounded-xl bg-[#0B0A19]/55 border border-white/20 text-sm text-white placeholder-white/40 focus:outline-none focus:border-[#00E5FF]"
                       />
                       {errors.playerName && (
                         <p className="mt-1 text-xs text-[#FF875E]">{errors.playerName}</p>
@@ -252,7 +244,7 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
                           setFormData({ ...formData, teamName: e.target.value })
                         }
                         placeholder="e.g. Coastal Dynamics"
-                        className="w-full min-h-[44px] px-4 rounded-xl bg-[#0B0A19]/80 border border-white/15 text-sm text-white placeholder-[#B8B4CA]/50 focus:outline-none focus:border-[#00E5FF]"
+                        className="w-full min-h-[44px] px-4 rounded-xl bg-[#0B0A19]/55 border border-white/20 text-sm text-white placeholder-white/40 focus:outline-none focus:border-[#00E5FF]"
                       />
                       {errors.teamName && (
                         <p className="mt-1 text-xs text-[#FF875E]">{errors.teamName}</p>
@@ -276,7 +268,7 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
                           setFormData({ ...formData, email: e.target.value })
                         }
                         placeholder="player@team.example"
-                        className="w-full min-h-[44px] px-4 rounded-xl bg-[#0B0A19]/80 border border-white/15 text-sm text-white placeholder-[#B8B4CA]/50 focus:outline-none focus:border-[#00E5FF]"
+                        className="w-full min-h-[44px] px-4 rounded-xl bg-[#0B0A19]/55 border border-white/20 text-sm text-white placeholder-white/40 focus:outline-none focus:border-[#00E5FF]"
                       />
                       {errors.email && (
                         <p className="mt-1 text-xs text-[#FF875E]">{errors.email}</p>
@@ -298,7 +290,7 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
                           setFormData({ ...formData, phone: e.target.value })
                         }
                         placeholder="+1 555 019 2027"
-                        className="w-full min-h-[44px] px-4 rounded-xl bg-[#0B0A19]/80 border border-white/15 text-sm text-white placeholder-[#B8B4CA]/50 focus:outline-none focus:border-[#00E5FF]"
+                        className="w-full min-h-[44px] px-4 rounded-xl bg-[#0B0A19]/55 border border-white/20 text-sm text-white placeholder-white/40 focus:outline-none focus:border-[#00E5FF]"
                       />
                       {errors.phone && (
                         <p className="mt-1 text-xs text-[#FF875E]">{errors.phone}</p>
@@ -320,7 +312,7 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
                         onChange={(e) =>
                           setFormData({ ...formData, teamSize: e.target.value })
                         }
-                        className="w-full min-h-[44px] px-3 rounded-xl bg-[#0B0A19]/80 border border-white/15 text-sm text-white focus:outline-none focus:border-[#00E5FF]"
+                        className="w-full min-h-[44px] px-3 rounded-xl bg-[#0B0A19]/70 border border-white/20 text-sm text-white focus:outline-none focus:border-[#00E5FF]"
                       >
                         <option value="1">1 Player (Solo)</option>
                         <option value="2">2 Players</option>
@@ -342,7 +334,7 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
                         onChange={(e) =>
                           setFormData({ ...formData, missionId: e.target.value })
                         }
-                        className="w-full min-h-[44px] px-3 rounded-xl bg-[#0B0A19]/80 border border-white/15 text-sm text-white focus:outline-none focus:border-[#00E5FF]"
+                        className="w-full min-h-[44px] px-3 rounded-xl bg-[#0B0A19]/70 border border-white/20 text-sm text-white focus:outline-none focus:border-[#00E5FF]"
                       >
                         {MISSION_TRACKS.map((m) => (
                           <option key={m.id} value={m.id}>
@@ -353,31 +345,8 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
                     </div>
                   </div>
 
-                  <div>
-                    <label
-                      htmlFor="categorySelect"
-                      className="block text-xs font-subheading font-semibold tracking-wider text-white mb-1.5"
-                    >
-                      ROBOTICS CATEGORY INTEREST
-                    </label>
-                    <select
-                      id="categorySelect"
-                      value={formData.categoryId}
-                      onChange={(e) =>
-                        setFormData({ ...formData, categoryId: e.target.value })
-                      }
-                      className="w-full min-h-[44px] px-3 rounded-xl bg-[#0B0A19]/80 border border-white/15 text-sm text-white focus:outline-none focus:border-[#00E5FF]"
-                    >
-                      {ROBOTICS_CATEGORIES.map((c) => (
-                        <option key={c.id} value={c.id}>
-                          {c.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
                   <div className="pt-1">
-                    <label className="flex items-start gap-3 cursor-pointer text-sm text-[#B8B4CA]">
+                    <label className="flex items-start gap-3 cursor-pointer text-sm text-white/85">
                       <input
                         type="checkbox"
                         checked={formData.agreed}
@@ -409,16 +378,16 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
           </div>
         </div>
 
-        {/* Contact & Coordinator Desk (Mirrors Reference Website Pit Contacts Section) */}
-        <div id="contact" className="pt-12 border-t border-white/10 space-y-8 scroll-mt-20">
-          <div className="space-y-2 max-w-2xl">
+        {/* Contact & Coordinator Desk */}
+        <div id="contact" className="pt-12 border-t border-white/15 space-y-8 scroll-mt-20">
+          <div className="liquid-glass-subtle rounded-2xl p-6 max-w-2xl space-y-2">
             <p className="font-subheading font-semibold text-sm tracking-[0.18em] text-[#FF3CAC]">
               ORGANIZER COMMAND & QUERIES
             </p>
             <h2 className="font-display font-bold text-2xl sm:text-3xl text-white">
               Contact the SpecteQ Desk
             </h2>
-            <p className="text-sm sm:text-base text-[#B8B4CA]">
+            <p className="text-sm sm:text-base text-white/85">
               Configurable organizer contact placeholders for registration inquiries,
               hardware scrutiny clarifications, and workshop pit bay logistics.
             </p>
@@ -430,7 +399,7 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
               return (
                 <article
                   key={coord.id}
-                  className="liquid-glass-subtle rounded-2xl p-6 flex flex-col justify-between gap-5"
+                  className="liquid-glass liquid-glass-interactive rounded-2xl p-6 flex flex-col justify-between gap-5"
                 >
                   <div className="space-y-1.5">
                     <span
@@ -442,15 +411,15 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
                     <h3 className="font-display font-bold text-lg text-white">
                       {coord.name}
                     </h3>
-                    <p className="text-sm text-[#B8B4CA]">{coord.role}</p>
+                    <p className="text-sm text-white/80">{coord.role}</p>
                   </div>
 
-                  <div className="pt-4 border-t border-white/10 space-y-2 text-xs sm:text-sm">
+                  <div className="pt-4 border-t border-white/15 space-y-2 text-xs sm:text-sm">
                     <div className="flex items-center gap-2 text-white">
                       <Phone className="w-4 h-4 text-[#00E5FF] shrink-0" />
                       <span className="font-mono-tabular">{coord.phonePlaceholder}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-[#B8B4CA]">
+                    <div className="flex items-center gap-2 text-white/80">
                       <Mail className="w-4 h-4 text-[#FF3CAC] shrink-0" />
                       <span className="truncate">{coord.emailPlaceholder}</span>
                     </div>
@@ -460,7 +429,7 @@ export const RegistrationSection: React.FC<RegistrationSectionProps> = ({
             })}
           </div>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 };
