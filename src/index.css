@@ -56,6 +56,7 @@
    True refractive translucent glass letting the coastal wallpaper bleed through
    ============================================================================ */
 
+@layer components {
 .liquid-glass {
   position: relative;
   overflow: hidden;
@@ -175,6 +176,7 @@
 .liquid-glass-interactive:hover::after {
   transform: translateX(160%);
   opacity: 0.9;
+}
 }
 
 /* Perspective grid for Arena horizon overlay */
