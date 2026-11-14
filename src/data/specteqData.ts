@@ -76,9 +76,13 @@ export interface ContactCoordinator {
 }
 
 export const ASSET_PATHS = {
-  background: './assets/aistudio/BG_0816284a.png',
-  logo: './assets/aistudio/logo_7d034baf.png',
-  hardwareBlueprint: './assets/aistudio/Hardware_architcture_blueprint_b810e078.png',
+  background: './assets/optimized/bg.webp',
+  backgroundJpgFallback: './assets/optimized/bg.jpg',
+  backgroundPngFallback: './assets/aistudio/BG_0816284a.png',
+  logo: './assets/optimized/logo.webp',
+  logoPngFallback: './assets/aistudio/logo_7d034baf.png',
+  hardwareBlueprint: './assets/optimized/blueprint.webp',
+  hardwareBlueprintPngFallback: './assets/aistudio/Hardware_architcture_blueprint_b810e078.png',
 };
 
 export const EVENT_CONFIG = {

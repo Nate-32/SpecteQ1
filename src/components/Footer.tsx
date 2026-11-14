@@ -21,11 +21,18 @@ export const Footer: React.FC = () => {
           {/* Brand Column with Official Supplied Emblem */}
           <div className="md:col-span-5 space-y-3">
             <a href="#home" className="inline-flex items-center gap-3 text-white">
-              <img
-                src={ASSET_PATHS.logo}
-                alt="SpecteQ Logo"
-                className="h-10 w-10 object-contain rounded-lg shrink-0"
-              />
+              <picture>
+                <source srcSet={ASSET_PATHS.logo} type="image/webp" />
+                <img
+                  src={ASSET_PATHS.logoPngFallback}
+                  alt="SpecteQ Logo"
+                  width={40}
+                  height={40}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-10 w-10 object-contain rounded-lg shrink-0"
+                />
+              </picture>
               <span className="font-display font-extrabold italic text-xl tracking-wider">
                 SpecteQ 2027
               </span>

@@ -48,11 +48,17 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
           aria-label="SpecteQ 2027 Home"
           className="flex items-center gap-3 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00E5FF] rounded-lg"
         >
-          <img
-            src={ASSET_PATHS.logo}
-            alt="SpecteQ Logo"
-            className="h-11 w-11 object-contain rounded-lg shrink-0"
-          />
+          <picture>
+            <source srcSet={ASSET_PATHS.logo} type="image/webp" />
+            <img
+              src={ASSET_PATHS.logoPngFallback}
+              alt="SpecteQ Logo"
+              width={44}
+              height={44}
+              decoding="async"
+              className="h-11 w-11 object-contain rounded-lg shrink-0"
+            />
+          </picture>
           <span className="font-display font-extrabold italic text-lg tracking-wider text-white whitespace-nowrap hidden sm:inline">
             SpecteQ
           </span>

@@ -78,11 +78,16 @@ export const AboutSection: React.FC = () => {
                       '0 0 36px -10px rgba(0, 229, 255, 0.32), 0 0 42px -12px rgba(255, 60, 172, 0.28)',
                   }}
                 />
-                <img
-                  src={ASSET_PATHS.hardwareBlueprint}
-                  alt="SpecteQ Hardware Architecture Blueprint showing Optical Array, MCU Core, and Drive Pod"
-                  className="relative z-10 w-full h-auto max-h-[380px] object-contain rounded-xl transition-transform duration-300 group-hover:scale-[1.015]"
-                />
+                <picture className="relative z-10 w-full flex justify-center">
+                  <source srcSet={ASSET_PATHS.hardwareBlueprint} type="image/webp" />
+                  <img
+                    src={ASSET_PATHS.hardwareBlueprintPngFallback}
+                    alt="SpecteQ Hardware Architecture Blueprint showing Optical Array, MCU Core, and Drive Pod"
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-auto max-h-[380px] object-contain rounded-xl transition-transform duration-300 group-hover:scale-[1.015]"
+                  />
+                </picture>
               </div>
 
               <div className="px-6 py-4 border-t border-white/15 flex flex-wrap items-center justify-between gap-3 text-xs text-white/80">

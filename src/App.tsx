@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AboutSection } from './components/AboutSection';
 import { ArenaSection } from './components/ArenaSection';
 import { Footer } from './components/Footer';
@@ -29,6 +29,8 @@ export default function App() {
   const [activeSection, setActiveSection] = useState<string>('home');
   const [activeMission, setActiveMission] = useState<MissionTrack | null>(null);
   const [unlockedLevel, setUnlockedLevel] = useState<number>(0);
+  const [bgLoaded, setBgLoaded] = useState<boolean>(false);
+  const bgImgRef = useRef<HTMLImageElement | null>(null);
   const [playerState, setPlayerState] = useState<PlayerSessionState>({
     status: 'READY',
     currentLevel: 0,
@@ -36,6 +38,12 @@ export default function App() {
     missionStatus: 'NOT STARTED',
     registeredTeam: null,
   });
+
+  useEffect(() => {
+    if (bgImgRef.current?.complete) {
+      setBgLoaded(true);
+    }
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -112,12 +120,27 @@ export default function App() {
       <div
         className="fixed inset-0 z-0 pointer-events-none select-none overflow-hidden"
         aria-hidden="true"
+        style={{
+          background:
+            'radial-gradient(ellipse 75% 60% at 70% 35%, rgba(255, 135, 94, 0.34) 0%, rgba(255, 60, 172, 0.22) 35%, rgba(155, 92, 255, 0.2) 60%, #0B0A19 100%)',
+        }}
       >
-        <img
-          src={ASSET_PATHS.background}
-          alt=""
-          className="w-full h-full object-cover object-center"
-        />
+        <picture>
+          <source srcSet={ASSET_PATHS.background} type="image/webp" />
+          <source srcSet={ASSET_PATHS.backgroundJpgFallback} type="image/jpeg" />
+          <img
+            ref={bgImgRef}
+            src={ASSET_PATHS.backgroundPngFallback}
+            alt=""
+            fetchPriority="high"
+            decoding="async"
+            onLoad={() => setBgLoaded(true)}
+            onError={() => setBgLoaded(true)}
+            className={`w-full h-full object-cover object-center transition-opacity duration-500 ${
+              bgLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+        </picture>
         {/* Subtle atmospheric dark tint so glass panels keep crisp contrast while sunset & neon lights shine through */}
         <div
           className="absolute inset-0"
